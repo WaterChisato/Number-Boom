@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数字炸弹Number-Boom</title>
+  <style>
+    #timerDisplay {
+      font-size: 2em;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .container {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <button id="startButton">数字炸弹Number-Boom</button>
+    <div id="timerDisplay"></div>
+  </div>
+  <audio id="explosionSound" src="explosion.mp3" preload="auto"></audio>
+  <script>
+    let timerId = null;
+    const startButton = document.getElementById('startButton');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const explosionSound = document.getElementById('explosionSound');
+    startButton.addEventListener('click', () => {
+      if (timerId) {
+        clearInterval(timerId);
+      }
+      let seconds = Math.floor(Math.random() * (120 - 10 + 1)) + 10; // 随机10到120秒
+      timerDisplay.textContent = formatTime(seconds);
+      timerId = setInterval(() => {
+        seconds--;
+        if (seconds >= 0) {
+          timerDisplay.textContent = formatTime(seconds);
+        } else {
+          clearInterval(timerId);
+          timerId = null;
+          explosionSound.play();
+        }
+      }, 1000);
+    });
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+  </script>
+</body>
+</html>
